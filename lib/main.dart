@@ -89,20 +89,20 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 onPressed: () {
                   //The user press true.
-                  setState(() {
-                    if (quizBrain.getQuestionAnswer() == true) {
-                      addScore(true);
-                    } else {
-                      addScore(false);
-                    }
-                    quizBrain.nextQuestion();
+                  if (quizBrain.getQuestionAnswer() == true) {
+                    addScore(true);
+                  } else {
+                    addScore(false);
+                  }
+                  quizBrain.nextQuestion();
 
-                    _text = quizBrain.getCurrentQuestion().toString() +
-                        "\n" +
-                        quizBrain.getQuestionText() +
-                        "\n" +
-                        quizBrain.getQuestionAnswer().toString();
-                  });
+                  _text = quizBrain.getCurrentQuestion().toString() +
+                      "\n" +
+                      quizBrain.getQuestionText() +
+                      "\n" +
+                      quizBrain.getQuestionAnswer().toString();
+                  // setState() can be added in the beginning or in the end of the instructions or contain the instructions
+                  setState(() {});
                 },
               ),
             ),
