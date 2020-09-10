@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
@@ -30,6 +31,8 @@ class _QuizPageState extends State<QuizPage> {
   String _text = 'Click to see the questions ...';
 
   List<Icon> scoreKeeper = [];
+  
+  // TODO: replace with the shortened version 
   bool isDisabled(int index) {
     if (index == -1) {
       return true;
@@ -164,6 +167,12 @@ class _QuizPageState extends State<QuizPage> {
         color: Colors.red,
       ));
     }
+  }
+
+  void alertScore(){
+     Alert()
+
+    )
   }
 }
 
