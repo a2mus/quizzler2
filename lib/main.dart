@@ -31,8 +31,8 @@ class _QuizPageState extends State<QuizPage> {
   String _text = 'Click to see the questions ...';
 
   List<Icon> scoreKeeper = [];
-  
-  // TODO: replace with the shortened version 
+
+  // TODO: replace with the shortened version
   bool isDisabled(int index) {
     if (index == -1) {
       return true;
@@ -141,6 +141,7 @@ class _QuizPageState extends State<QuizPage> {
                         "\n" +
                         quizBrain.getQuestionAnswer().toString();
                   });
+                  alertScore();
                 },
               ),
             ),
@@ -169,10 +170,11 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  void alertScore(){
-     Alert()
-
-    )
+  void alertScore() {
+    Alert(
+      context: context,
+      title: 'my alert',
+    ).show();
   }
 }
 
