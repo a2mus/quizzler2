@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quizzler/quiz_brain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -31,7 +32,7 @@ class _QuizPageState extends State<QuizPage> {
   String _text = 'Click to see the questions ...';
 
   List<Icon> scoreKeeper = [];
-
+  int score = 0;
   // TODO: replace with the shortened version
   bool isDisabled(int index) {
     if (index == -1) {
@@ -92,20 +93,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 onPressed: () {
                   //The user press true.
-                  if (quizBrain.getQuestionAnswer() == true) {
-                    addScore(true);
-                  } else {
-                    addScore(false);
-                  }
-                  quizBrain.nextQuestion();
-
-                  _text = quizBrain.getCurrentQuestion().toString() +
-                      "\n" +
-                      quizBrain.getQuestionText() +
-                      "\n" +
-                      quizBrain.getQuestionAnswer().toString();
-                  // setState() can be added in the beginning or in the end of the instructions or contain the instructions
-                  setState(() {});
+                  checkAnswer(true);
                 },
               ),
             ),
@@ -127,21 +115,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 onPressed: () {
                   //The user press false.
-
-                  setState(() {
-                    if (quizBrain.getQuestionAnswer() == false) {
-                      addScore(true);
-                    } else {
-                      addScore(false);
-                    }
-                    quizBrain.nextQuestion();
-                    _text = quizBrain.getCurrentQuestion().toString() +
-                        "\n" +
-                        quizBrain.getQuestionText() +
-                        "\n" +
-                        quizBrain.getQuestionAnswer().toString();
-                  });
-                  alertScore();
+                  checkAnswer(false);
                 },
               ),
             ),
@@ -156,12 +130,37 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  void checkAnswer(bool answer) {
+    setState(() {
+      if (quizBrain.getQuestionAnswer() == answer) {
+        addScore(true);
+      } else {
+        addScore(false);
+      }
+      quizBrain.nextQuestion();
+      if (quizBrain.getCurrentQuestion() != 0) {
+        print(quizBrain.length());
+        _text = quizBrain.getCurrentQuestion().toString() +
+            "\n" +
+            quizBrain.getQuestionText() +
+            "\n" +
+            quizBrain.getQuestionAnswer().toString();
+      } else {
+        alertScore();
+        // TODO: - if OK pressed repeat the quiz else show your score and exit app
+
+      }
+    });
+  }
+
   void addScore(bool response) {
     if (response) {
       scoreKeeper.add(Icon(
         Icons.check,
         color: Colors.green,
       ));
+      score++;
+      print('score =  $score');
     } else {
       scoreKeeper.add(Icon(
         Icons.close,
@@ -171,10 +170,41 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void alertScore() {
-    Alert(
-      context: context,
-      title: 'my alert',
-    ).show();
+    Alert(context: context, title: 'Replay ?', buttons: [
+      DialogButton(
+          child: Text('OK'),
+          onPressed: () {
+            _text = quizBrain.getCurrentQuestion().toString() +
+                "\n" +
+                quizBrain.getQuestionText() +
+                "\n" +
+                quizBrain.getQuestionAnswer().toString();
+            setState(() {});
+            scoreKeeper.clear();
+            score = 0;
+            Navigator.pop(context);
+          }),
+      DialogButton(
+          child: Text('No'),
+          onPressed: () {
+            int total = quizBrain.length();
+            Alert(
+                context: context,
+                title: 'Your score is $score / $total',
+                type: AlertType.info,
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "Exit",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                  )
+                ]).show();
+          })
+    ]).show();
   }
 }
 

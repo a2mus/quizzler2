@@ -4,9 +4,6 @@ class QuizBrain {
   int _currentQuestion = -1;
 
   List<Question> _questionsBank = [
-    Question('You can lead a cow down stairs but not up stairs.', false),
-    Question('Approximately one quarter of human bones are in the feet.', true),
-    Question('A slug\'s blood is green.', true),
     Question('Some cats are actually allergic to humans', true),
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
@@ -52,8 +49,6 @@ class QuizBrain {
     } else {
       _currentQuestion = 0;
     }
-    print('length = ' + _questionsBank.length.toString());
-    print('current = ' + _currentQuestion.toString());
   }
 
   int getCurrentQuestion() {
